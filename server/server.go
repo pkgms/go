@@ -43,7 +43,7 @@ func New(cfg *Config) *Server {
 
 func (s *Server) Run() error {
 	go func() {
-		fmt.Println("Server starting")
+		fmt.Printf("Server listening at %s\n", s.Addr)
 		if err := s.ListenAndServe(); err != nil {
 			panic("服务监听异常：" + err.Error())
 		}
