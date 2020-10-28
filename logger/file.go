@@ -1,7 +1,7 @@
 /**
  * Created by zc on 2020/10/28.
  */
-package main
+package logger
 
 import (
 	"github.com/sirupsen/logrus"
