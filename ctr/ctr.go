@@ -31,6 +31,7 @@ func OK(w http.ResponseWriter, v interface{}) {
 
 // ErrorCode writes the json-encoded error message to the response.
 func ErrorCode(w http.ResponseWriter, err error, status int) {
+	Log.Errorln(err)
 	JSON(w, err.Error(), status)
 }
 
