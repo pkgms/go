@@ -27,7 +27,7 @@ type Server struct {
 }
 
 func New(cfg *Config) *Server {
-	var port = DefaultPort
+	port := DefaultPort
 	if cfg.Port > 0 {
 		port = cfg.Port
 	}
@@ -41,22 +41,20 @@ func New(cfg *Config) *Server {
 	return &Server{Server: server}
 }
 
-func (s *Server) Run() error {
+func (s *Server) Run(ctx context.Context) error {
 	go func() {
-		fmt.Printf("Server Listening on %s\n", s.Addr)
-		if err := s.ListenAndServe(); err != nil {
-			panic("服务监听异常：" + err.Error())
+		ch := make(chan os.Signal)
+		signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
+		select {
+		case <-ctx.Done():
+		case <-ch:
+			fmt.Println("Server shutdown.")
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			if err := s.Shutdown(ctx); err != nil {
+				fmt.Println("Server shutdown failed: ", err)
+			}
 		}
 	}()
-	return s.Exit()
-}
-
-func (s *Server) Exit() error {
-	ch := make(chan os.Signal)
-	signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
-	sig := <-ch
-	fmt.Println("\nServer shutdown: got a signal", sig)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	return s.Shutdown(ctx)
+	return s.ListenAndServe()
 }
