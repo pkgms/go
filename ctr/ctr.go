@@ -29,6 +29,16 @@ func OK(w http.ResponseWriter, v interface{}) {
 	JSON(w, v, http.StatusOK)
 }
 
+// Redirect replies to the request with a redirect to url.
+func Redirect(w http.ResponseWriter, r *http.Request, url string, code int) {
+	http.Redirect(w, r, url, code)
+}
+
+// Found replies to the request with a redirect to url.
+func Found(w http.ResponseWriter, r *http.Request, url string) {
+	Redirect(w, r, url, http.StatusFound)
+}
+
 // ErrorCode writes the json-encoded error message to the response.
 func ErrorCode(w http.ResponseWriter, err error, status int) {
 	Log.Errorln(err)
