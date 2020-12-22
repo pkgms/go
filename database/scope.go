@@ -10,11 +10,15 @@ import (
 )
 
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
+	page, _ := strconv.Atoi(
+		r.URL.Query().Get("page"))
+	size, _ := strconv.Atoi(
+		r.URL.Query().Get("size"))
+	return PaginateDirect(page, size)
+}
+
+func PaginateDirect(page int, size int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		page, _ := strconv.Atoi(
-			r.URL.Query().Get("page"))
-		size, _ := strconv.Atoi(
-			r.URL.Query().Get("size"))
 		if page < 1 {
 			page = 1
 		}
