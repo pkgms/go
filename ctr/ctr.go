@@ -29,6 +29,11 @@ func OK(w http.ResponseWriter, v interface{}) {
 	JSON(w, v, http.StatusOK)
 }
 
+// NoContent writes no content to the response.
+func NoContent(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusNoContent)
+}
+
 // Redirect replies to the request with a redirect to url.
 func Redirect(w http.ResponseWriter, r *http.Request, url string, code int) {
 	http.Redirect(w, r, url, code)
