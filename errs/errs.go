@@ -13,33 +13,50 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package database
+package errs
 
 import (
-	"gorm.io/gorm"
+	"fmt"
 	"net/http"
-	"strconv"
 )
 
-func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
-	page, _ := strconv.Atoi(
-		r.URL.Query().Get("page"))
-	size, _ := strconv.Atoi(
-		r.URL.Query().Get("size"))
-	return PaginateDirect(page, size)
+var defaultHttpCode = http.StatusInternalServerError
+
+func SetDefaultHttpCode(code int) {
+	defaultHttpCode = code
 }
 
-func PaginateDirect(page int, size int) func(db *gorm.DB) *gorm.DB {
-	return func(db *gorm.DB) *gorm.DB {
-		if page < 1 {
-			page = 1
-		}
-		switch {
-		case size > 100:
-			size = 100
-		case size < 1:
-			size = 10
-		}
-		return db.Offset((page - 1) * size).Limit(size)
+type Error struct {
+	code int
+	s    string
+}
+
+func New(text string) *Error {
+	return &Error{
+		s:    text,
+		code: defaultHttpCode,
 	}
+}
+
+func (e *Error) Error() string {
+	return e.s
+}
+
+func (e *Error) WithArgs(vs ...interface{}) *Error {
+	str := fmt.Sprintf(e.s, vs...)
+	return &Error{
+		code: e.code,
+		s:    str,
+	}
+}
+
+func (e *Error) WithHttpCode(code int) *Error {
+	return &Error{
+		code: code,
+		s:    e.s,
+	}
+}
+
+func (e *Error) HttpCode() int {
+	return e.code
 }
