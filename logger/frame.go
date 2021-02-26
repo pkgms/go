@@ -17,10 +17,11 @@ package logger
 
 import (
 	"bytes"
-	"github.com/sirupsen/logrus"
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 type FrameContextHook struct {

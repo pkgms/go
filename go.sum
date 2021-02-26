@@ -13,6 +13,9 @@ golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 h1:YyJpGZS1sBuBCzLAR1VEpK193
 golang.org/x/sys v0.0.0-20191026070338-33540a1f6037/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c h1:2+jF2APAgFgXJnYOQGDGGiRvvEo6OhqZGQf46n9xgEw=
 golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
+gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
 gorm.io/driver/mysql v1.0.2 h1:xm21Um8cR/Cg+nMwSrajf8aBUxOIC+WmH72ir/ByYR8=
 gorm.io/driver/mysql v1.0.2/go.mod h1:T+Fv7Rq/8+lpS3X1KKVUbj8Y/SzbPa5esK9KpPAKXR8=
 gorm.io/driver/mysql v1.0.3 h1:+JKBYPfn1tygR1/of/Fh2T8iwuVwzt+PEJmKaXzMQXg=

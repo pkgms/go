@@ -16,8 +16,9 @@ limitations under the License.
 package errs
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/pkgms/go/i18n"
 )
 
 var defaultHttpCode = http.StatusInternalServerError
@@ -26,37 +27,13 @@ func SetDefaultHttpCode(code int) {
 	defaultHttpCode = code
 }
 
-type Error struct {
-	code int
-	s    string
-}
+type Error = i18n.Error
 
 func New(text string) *Error {
 	return &Error{
-		s:    text,
-		code: defaultHttpCode,
+		HttpCode: defaultHttpCode,
+		Option: i18n.Option{
+			Value: text,
+		},
 	}
-}
-
-func (e *Error) Error() string {
-	return e.s
-}
-
-func (e *Error) WithArgs(vs ...interface{}) *Error {
-	str := fmt.Sprintf(e.s, vs...)
-	return &Error{
-		code: e.code,
-		s:    str,
-	}
-}
-
-func (e *Error) WithHttpCode(code int) *Error {
-	return &Error{
-		code: code,
-		s:    e.s,
-	}
-}
-
-func (e *Error) HttpCode() int {
-	return e.code
 }

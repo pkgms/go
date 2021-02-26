@@ -16,11 +16,12 @@ limitations under the License.
 package database
 
 import (
+	"time"
+
 	"github.com/go-sql-driver/mysql"
 	gormmysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"time"
 )
 
 type Config struct {

@@ -16,11 +16,12 @@ limitations under the License.
 package logger
 
 import (
-	"github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (

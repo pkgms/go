@@ -17,8 +17,9 @@ package ctr
 
 import (
 	"encoding/json"
-	"github.com/pkgms/go/errs"
 	"net/http"
+
+	"github.com/pkgms/go/errs"
 )
 
 // Success writes ok message to the response.

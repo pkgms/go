@@ -13,34 +13,35 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package database
+package i18n
 
-import (
-	"net/http"
-	"strconv"
+import "fmt"
 
-	"gorm.io/gorm"
-)
-
-func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
-	page, _ := strconv.Atoi(
-		r.URL.Query().Get("page"))
-	size, _ := strconv.Atoi(
-		r.URL.Query().Get("size"))
-	return PaginateDirect(page, size)
+type Error struct {
+	Option
+	HttpCode int
 }
 
-func PaginateDirect(page int, size int) func(db *gorm.DB) *gorm.DB {
-	return func(db *gorm.DB) *gorm.DB {
-		if page < 1 {
-			page = 1
-		}
-		switch {
-		case size > 100:
-			size = 100
-		case size < 1:
-			size = 10
-		}
-		return db.Offset((page - 1) * size).Limit(size)
+func (e *Error) WithArgs(args ...interface{}) *Error {
+	opt := e.Option
+	opt.Args = args
+	return &Error{Option: opt}
+}
+
+func (e *Error) WithHttpCode(code int) *Error {
+	e.HttpCode = code
+	return e
+}
+
+func (e *Error) Error() string {
+	return fmt.Sprintf(e.Option.Value, e.Option.Args...)
+}
+
+func VerifyError(locales *Locales, err *Error) *Error {
+	opt := err.Option
+	format := locales.Get(err.Option)
+	if format != "" {
+		opt.Value = format
 	}
+	return &Error{Option: opt}
 }
