@@ -115,13 +115,6 @@ func (d *Data) Option() Option {
 	}
 }
 
-func (d *Data) Error() *Error {
-	return &Error{
-		Option:   d.Option(),
-		HttpCode: d.httpCode,
-	}
-}
-
 func Verify(locales *Locales, data *Data) string {
 	format := locales.Get(data.Option())
 	if format == "" {

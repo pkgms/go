@@ -22,6 +22,16 @@ type Error struct {
 	HttpCode int
 }
 
+func NewError(opt Option) *Error {
+	return &Error{
+		Option: opt,
+	}
+}
+
+func NewErrorWithData(data *Data) *Error {
+	return NewError(data.Option()).WithHttpCode(data.HttpCode())
+}
+
 func (e *Error) WithArgs(args ...interface{}) *Error {
 	opt := e.Option
 	opt.Args = args
