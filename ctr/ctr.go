@@ -67,7 +67,7 @@ func ErrorCode(w http.ResponseWriter, err error, status int) {
 // Error writes the json-encoded error message to the response
 // with a auto status code.
 func Error(w http.ResponseWriter, err *errs.Error) {
-	ErrorCode(w, err, err.HttpCode())
+	ErrorCode(w, err, err.HttpCode)
 }
 
 // InternalError writes the json-encoded error message to the response
