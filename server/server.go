@@ -54,28 +54,26 @@ func New(cfg *Config) *Server {
 }
 
 func (s *Server) Run(ctx context.Context) error {
-	s.ShutdownGraceful(ctx)
+	go s.ShutdownGraceful(ctx)
 	return s.ListenAndServe()
 }
 
 func (s *Server) RunTLS(ctx context.Context) error {
-	s.ShutdownGraceful(ctx)
+	go s.ShutdownGraceful(ctx)
 	return s.ListenAndServeTLS("", "")
 }
 
 func (s *Server) ShutdownGraceful(ctx context.Context) {
-	go func() {
-		ch := make(chan os.Signal)
-		signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
-		select {
-		case <-ctx.Done():
-		case <-ch:
-			fmt.Println("Server shutdown.")
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			defer cancel()
-			if err := s.Shutdown(ctx); err != nil {
-				fmt.Println("Server shutdown failed: ", err)
-			}
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
+	select {
+	case <-ctx.Done():
+	case <-ch:
+		fmt.Println("Server shutdown.")
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := s.Shutdown(ctx); err != nil {
+			fmt.Println("Server shutdown failed: ", err)
 		}
-	}()
+	}
 }
