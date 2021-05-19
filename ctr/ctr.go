@@ -18,8 +18,6 @@ package ctr
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/pkgms/go/errs"
 )
 
 // Success writes ok message to the response.
@@ -62,12 +60,6 @@ func Found(w http.ResponseWriter, r *http.Request, url string) {
 func ErrorCode(w http.ResponseWriter, err error, status int) {
 	Log.Errorln(err)
 	JSON(w, err.Error(), status)
-}
-
-// Error writes the json-encoded error message to the response
-// with a auto status code.
-func Error(w http.ResponseWriter, err *errs.Error) {
-	ErrorCode(w, err, err.HttpCode)
 }
 
 // InternalError writes the json-encoded error message to the response
