@@ -24,6 +24,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"golang.org/x/net/http2"
 )
 
 const DefaultPort = 9090
@@ -51,6 +53,14 @@ func New(cfg *Config) *Server {
 		MaxHeaderBytes: 1 << 20,
 	}
 	return &Server{Server: server}
+}
+
+func NewHTTP2(cfg *Config, conf *http2.Server) (*Server, error) {
+	srv := New(cfg)
+	if err := http2.ConfigureServer(srv.Server, conf); err != nil {
+		return nil, err
+	}
+	return srv, nil
 }
 
 func (s *Server) Run(ctx context.Context) error {
