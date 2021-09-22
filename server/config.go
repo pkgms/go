@@ -15,6 +15,7 @@
 package server
 
 import (
+	"os"
 	"strings"
 
 	"github.com/mitchellh/go-homedir"
@@ -47,7 +48,9 @@ func ParseConfigWithEnv(configPath string, data interface{}, envPrefix string) e
 		viper.AutomaticEnv()
 	}
 	if err := viper.ReadInConfig(); err != nil {
-		return err
+		if _, ok := err.(*os.PathError); !ok {
+			return err
+		}
 	}
 	return viper.Unmarshal(data, func(dc *mapstructure.DecoderConfig) {
 		dc.TagName = "json"
