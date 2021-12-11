@@ -30,6 +30,12 @@ import (
 
 const DefaultPort = 9090
 
+var ch = make(chan os.Signal)
+
+func init() {
+	signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
+}
+
 type Config struct {
 	Host   string `json:"host" yaml:"host"`
 	Port   int    `json:"port" yaml:"port"`
@@ -74,8 +80,6 @@ func (s *Server) RunTLS(ctx context.Context) error {
 }
 
 func (s *Server) ShutdownGraceful(ctx context.Context) {
-	ch := make(chan os.Signal)
-	signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
 	select {
 	case <-ctx.Done():
 	case <-ch:
