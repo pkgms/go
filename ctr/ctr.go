@@ -58,6 +58,10 @@ func Found(w http.ResponseWriter, r *http.Request, url string) {
 
 // ErrorCode writes the json-encoded error message to the response.
 func ErrorCode(w http.ResponseWriter, err error, status int) {
+	if err == nil {
+		w.WriteHeader(status)
+		return
+	}
 	Log.Errorln(err)
 	JSON(w, err.Error(), status)
 }
